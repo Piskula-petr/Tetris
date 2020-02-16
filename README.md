@@ -6,7 +6,7 @@
 Endless version of legendary game Tetris from 1984 build in Java.
 
 ### Technology
-Java (jdk-13.0.1) <br>
+Java <br>
 Swing library
 
 ### Controls
