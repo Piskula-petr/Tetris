@@ -34,7 +34,7 @@ public class GameWindow extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	private final int HEIGHT = 800;
-    private final int WIDTH = 400;
+	private final int WIDTH = 400;
     
     private int blockWidth = HEIGHT / 20;	// Šířka bloku
     private int screenCenter = WIDTH / 2;   // Střed hracího pole
@@ -65,6 +65,7 @@ public class GameWindow extends JPanel{
     private List<Integer> data = new ArrayList<>();		// List dat ze souboru
     
 // Konstruktor //////////////////////////////////////////////////////////////////////////////////////
+    
     public GameWindow() {
     	
         setPreferredSize(new Dimension(WIDTH + (HEIGHT / 4), HEIGHT));
@@ -102,7 +103,7 @@ public class GameWindow extends JPanel{
         
         addKeyBinding(this, KeyEvent.VK_DOWN, "DownPressed", (action) -> {
             
-        	if (inGame){
+        	if (inGame) {
             	timer.setInitialDelay(30);
             	timer.setDelay(30);
             	timer.restart();
@@ -119,6 +120,7 @@ public class GameWindow extends JPanel{
         	
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
                 if (inGame){
                     moveDown();
                     score++;
@@ -141,7 +143,8 @@ public class GameWindow extends JPanel{
      * @param actionListener - posluchač
      */
     public void addKeyBinding(JComponent component, int keyCode, String id, ActionListener actionListener){
-        ActionMap actionMap = component.getActionMap();
+        
+    	ActionMap actionMap = component.getActionMap();
         actionMap.put(id, new AbstractAction() {
             
             @Override
@@ -154,61 +157,76 @@ public class GameWindow extends JPanel{
     /**
      * 	Vytvoření aktuálního bloku
      */
-    private void newBlock(){ 
+    private void newBlock() { 
+    	
         Block block = new Block();
         
         rotation = 0;
         collision = false;
         currentShape = nextShape;   // Předá tvar bloku
         
-        switch (currentShape){
+        switch (currentShape) {
+        
             case 0:
+            	
                 // Block O
                 currentBlock = block.getBlockO(rotation);
                 shadowBlock = block.getBlockO(rotation);
                 break;
+                
             case 1:
+            	
                 // Block I
                 currentBlock = block.getBlockI(rotation);
                 shadowBlock = block.getBlockI(rotation);
                 break;
+                
             case 2:
+            	
                 // Block T
                 currentBlock = block.getBlockT(rotation);
                 shadowBlock = block.getBlockT(rotation);
                 break;
+                
             case 3:
+            	
                 // Block S
                 currentBlock = block.getBlockS(rotation);
                 shadowBlock = block.getBlockS(rotation);
                 break;
+                
             case 4:
+            	
                 // Block Z
                 currentBlock = block.getBlockZ(rotation);
                 shadowBlock = block.getBlockZ(rotation);
                 break;
+                
             case 5:
+            	
                 // Block L
                 currentBlock = block.getBlockL(rotation);
                 shadowBlock = block.getBlockL(rotation);
                 break;
+                
             case 6:
+            	
                 // Block J
                 currentBlock = block.getBlockJ(rotation);
                 shadowBlock = block.getBlockJ(rotation);
                 break;
         }
         
-        centralPoint.setLocation((screenCenter + shiftOfGameArea) - (2*blockWidth), 0);
+        centralPoint.setLocation((screenCenter + shiftOfGameArea) - (2 * blockWidth), 0);
         
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
         	
             // Nastavení souřadnice aktuálního bloku 
             currentBlock[i].x = currentBlock[i].x * blockWidth;
             currentBlock[i].y = currentBlock[i].y * blockWidth;
             
             // Zarovnání aktuálního bloku na střed
-            currentBlock[i].x = currentBlock[i].x + (screenCenter + shiftOfGameArea) - (2*blockWidth);
+            currentBlock[i].x = currentBlock[i].x + (screenCenter + shiftOfGameArea) - (2 * blockWidth);
             
             // Nastavení souřadnice dopadu aktuálního bloku
             shadowBlock[i].x = (shadowBlock[i].x * blockWidth) + centralPoint.x;
@@ -226,12 +244,14 @@ public class GameWindow extends JPanel{
      * 	Vygenerování příštího bloku
      */
     private void nextBlock(){
+    	
         Random random = new Random();
         nextShape = random.nextInt(7);	// 0 - 7 varianty bloku
         
         Block block = new Block();
         
         switch (nextShape){
+        
             case 0:
             	
                 // Block O
@@ -283,39 +303,42 @@ public class GameWindow extends JPanel{
         }
         
         // Umístění příštího bloku na boční panel
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
+        	
             nextBlock[i].x = (nextBlock[i].x * blockWidth) + (WIDTH + (stringHeight / 2));
-            nextBlock[i].y = (nextBlock[i].y * blockWidth) + (8*stringHeight);
+            nextBlock[i].y = (nextBlock[i].y * blockWidth) + (8 * stringHeight);
         }
     }
     
     /**
      * 	Posun bloku o jeden díl doleva
      */
-    private void moveLeft(){
+    private void moveLeft() {
     	
         boolean blockOut = false;
         
         // Kontrola kolizí
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
         	
-            if (currentBlock[i].x - blockWidth < 0){
+            if (currentBlock[i].x - blockWidth < 0) {
                 blockOut = true;
             }
 
-            for (int j = 0; j < blocks.size() - currentBlock.length; j++){
+            for (int j = 0; j < blocks.size() - currentBlock.length; j++) {
             	
                 if (currentBlock[i].x - blockWidth == blocks.get(j).x &&
                     currentBlock[i].y == blocks.get(j).y){
+                	
                     blockOut = true;
                 }
             }    
         }
         
         // Pokud není kolize provede posun
-        if (!blockOut){
+        if (!blockOut) {
         	
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
+            	
                 currentBlock[i].x = currentBlock[i].x - blockWidth;
                 shadowBlock[i].x = shadowBlock[i].x - blockWidth;
                 shadowBlock[i].y = currentBlock[i].y;
@@ -329,30 +352,32 @@ public class GameWindow extends JPanel{
     /**
      * 	Posun bloku o jeden díl doprava
      */
-    private void moveRight(){
+    private void moveRight() {
     	
         boolean blockOut = false;
         
         // Kontrola kolizí
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
         	
-            if (currentBlock[i].x + blockWidth > (WIDTH - blockWidth) + shiftOfGameArea){
+            if (currentBlock[i].x + blockWidth > (WIDTH - blockWidth) + shiftOfGameArea) {
                 blockOut = true;
             }
         
-            for (int j = 0; j < blocks.size() - currentBlock.length; j++){
+            for (int j = 0; j < blocks.size() - currentBlock.length; j++) {
             	
                 if (currentBlock[i].x + blockWidth == blocks.get(j).x &&
                     currentBlock[i].y == blocks.get(j).y){
+                	
                     blockOut = true;
                 }
             }    
         }
         
         // Pokud není kolize provede posun
-        if (!blockOut){
+        if (!blockOut) {
         	
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
+            	
                 currentBlock[i].x = currentBlock[i].x + blockWidth;
                 shadowBlock[i].x = shadowBlock[i].x + blockWidth;
                 shadowBlock[i].y = currentBlock[i].y;
@@ -371,13 +396,13 @@ public class GameWindow extends JPanel{
         boolean blockOut = false;
         
         // Kontrola kolizí
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             
-            if (currentBlock[i].y + blockWidth > (HEIGHT - blockWidth)){
+            if (currentBlock[i].y + blockWidth > (HEIGHT - blockWidth)) {
                 blockOut = true;
             }
             
-            for (int j = 0; j < blocks.size() - currentBlock.length; j++){
+            for (int j = 0; j < blocks.size() - currentBlock.length; j++) {
             	
                 if (currentBlock[i].x == blocks.get(j).x &&
                     currentBlock[i].y + blockWidth == blocks.get(j).y){
@@ -389,15 +414,14 @@ public class GameWindow extends JPanel{
         // Pokud není kolize provede posun
         if (!blockOut){
         	
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 
                 currentBlock[i].y = currentBlock[i].y + blockWidth;
                 shadowBlock[i].y = currentBlock[i].y;
             }
             centralPoint.y = centralPoint.y + blockWidth;
-        }
-        
-        else {
+            
+        } else {
             deleteRow();    // Po dopadu zkonroluje zda není plný řádek,
             isPlaying();    // ověří zda hra běží,
             newBlock();    	// vytvoří příští blok,
@@ -410,49 +434,58 @@ public class GameWindow extends JPanel{
     /**
      * 	Rotace bloku
      */
-    private void rotation(){
+    private void rotation() {
+    	
     	collision = false;
     	
     	// Kontrola rotace 0 - 3
-    	if (rotation < 3){
-           	rotation++;     
+    	if (rotation < 3) {
+           	rotation++; 
+           	
         } else rotation = 0;
         
         Block block = new Block();
         
-        switch(currentShape){
+        switch(currentShape) {
         
         	case 0:
+        		
         		// Block O
         		assistantBlock = block.getBlockO(rotation);
         		break;
         		
         	case 1:
+        		
         		// Block I
         		assistantBlock = block.getBlockI(rotation);
         		break;
         		
         	case 2:
+        		
         		// Block T
         		assistantBlock = block.getBlockT(rotation);
         		break;
         		
         	case 3:
+        		
         		// Block S
         		assistantBlock = block.getBlockS(rotation);
         		break;
         		
         	case 4:
+        		
         		// Block Z
         		assistantBlock = block.getBlockZ(rotation);
         		break;
         		
         	case 5:
+        		
         		// Block L
         		assistantBlock = block.getBlockL(rotation);
         		break;
         		
         	case 6:
+        		
         		// Block J
         		assistantBlock = block.getBlockJ(rotation);
         		break;
@@ -460,6 +493,7 @@ public class GameWindow extends JPanel{
         
         // Nastaví souřadnice pomocnému bloku (nevykreslí)
         for (int i = 0; i < 4; i++) {
+        	
         	assistantBlock[i].x = (assistantBlock[i].x * blockWidth) + centralPoint.x;
         	assistantBlock[i].y = (assistantBlock[i].y * blockWidth) + centralPoint.y;
         }
@@ -469,10 +503,11 @@ public class GameWindow extends JPanel{
         // Kontrola kolizí s bloky okolo
         for (int i = 0; i < 4; i++) {
         	
-        	for (int j = 0; j < blocks.size() - assistantBlock.length; j++){
+        	for (int j = 0; j < blocks.size() - assistantBlock.length; j++) {
         		
                 if (assistantBlock[i].x == blocks.get(j).x &&
                 	assistantBlock[i].y == blocks.get(j).y){
+                	
                     collision = true;
                 }
             }
@@ -481,7 +516,8 @@ public class GameWindow extends JPanel{
         // Pokud nenastane kolize přidělý souřadnice aktuálnímu bloku a dopadu bloku
         if (!collision) {
         	
-        	for (int i = 0; i < 4; i++){
+        	for (int i = 0; i < 4; i++) {
+        		
                 blocks.remove(currentBlock[i]);
                 
                 currentBlock[i].x = assistantBlock[i].x;
@@ -501,46 +537,46 @@ public class GameWindow extends JPanel{
     /**
      * 	Opravení pomocného bloku, pokud při rotaci opustí herní plochu
      */
-    private void fixBlockOut(){
+    private void fixBlockOut() {
     	
         boolean leftOut = false;
         boolean rightOut = false;
         boolean downOut = false;
         
         // Kontrola kolizí
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
         	
             if (assistantBlock[i].x < 0){
                 leftOut = true;
             
-            } else if (assistantBlock[i].x > (WIDTH - blockWidth) + shiftOfGameArea){
+            } else if (assistantBlock[i].x > (WIDTH - blockWidth) + shiftOfGameArea) {
                 rightOut = true;
             
-            } else if (assistantBlock[i].y > (HEIGHT - blockWidth)){
+            } else if (assistantBlock[i].y > (HEIGHT - blockWidth)) {
                 downOut = true;
             }
         }
         
         // Posune aktuální blok zpět na herní plochu
-        if (leftOut){
+        if (leftOut) { 
         	
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
             	assistantBlock[i].x = assistantBlock[i].x + blockWidth;
             }
             
             fixBlockOut();      // Rekurze
         
-        } else if (rightOut){
+        } else if (rightOut) {
            
-        	for (int i = 0; i < 4; i++){
+        	for (int i = 0; i < 4; i++) {
             	assistantBlock[i].x = assistantBlock[i].x - blockWidth;
             }
         	
             fixBlockOut();      // Rekurze
         
-        } else if (downOut){
+        } else if (downOut) {
            
-        	for (int i = 0; i < 4; i++){
+        	for (int i = 0; i < 4; i++) {
             	assistantBlock[i].y = assistantBlock[i].y - blockWidth;
             }
         	
@@ -551,29 +587,30 @@ public class GameWindow extends JPanel{
     /**
      * 	Vymazání plného řádků
      */
-    private void deleteRow(){
+    private void deleteRow() {
     	
         int column = 0;         // Aktuálně kontrolovaný řádek
         int columnCounter = 0; 	// Čítač bloků
         int rowCounter = 0;   	// Čítač řádků
         
         // Procházení herní plochy (po řádku)
-        while (column != HEIGHT){
+        while (column != HEIGHT) {
         	
-            for (int i = 0; i < blocks.size(); i++){  
+            for (int i = 0; i < blocks.size(); i++) {  
             	
-                if (column == blocks.get(i).y){
+                if (column == blocks.get(i).y) {
                     columnCounter++;
                 }
             }
             
             // Pokud čítač dosáhne 10 (plný řádek) smaže jeho obsah 
             // a posune zbytek herní plochy o jeden díl dolů
-            if (columnCounter >= 10 ){
+            if (columnCounter >= 10 ) {
             	
-                for (int i = 0; i < blocks.size(); i++){
+                for (int i = 0; i < blocks.size(); i++) {
                 	
-                    if (blocks.get(i).y == column){
+                    if (blocks.get(i).y == column) {
+                    	
                         blocks.remove(i);
                         colors.remove(i);
                         i--;
@@ -581,9 +618,9 @@ public class GameWindow extends JPanel{
                     }
                 }
                 
-                for (int i = 0; i < blocks.size(); i++){
+                for (int i = 0; i < blocks.size(); i++) {
                 	
-                    if (blocks.get(i).y < column){
+                    if (blocks.get(i).y < column) {
                         blocks.get(i).y = blocks.get(i).y + blockWidth;
                     }
                 }
@@ -593,21 +630,21 @@ public class GameWindow extends JPanel{
         }
         
         // Zvýší skóre smazaných řádků
-        if (rowCounter % 10 == 0 && inGame){
+        if (rowCounter % 10 == 0 && inGame) {
             linesScore = linesScore + (rowCounter / 10);
         }
         
         // Přičte skóre podle počtu smazaných řádků
-        if (rowCounter == 10 && inGame){
+        if (rowCounter == 10 && inGame) {
             score = score + 100;
         
-        } else if (rowCounter == 20 && inGame){
+        } else if (rowCounter == 20 && inGame) {
             score = score + 400;
         
-        } else if (rowCounter == 30 && inGame){
+        } else if (rowCounter == 30 && inGame) {
             score = score + 900;
         
-        } else if (rowCounter == 40 && inGame){
+        } else if (rowCounter == 40 && inGame) {
             score = score + 2000;
         }
     }
@@ -615,29 +652,31 @@ public class GameWindow extends JPanel{
     /**
      * 	Nastavení dopadu aktuálního bloku
      */
-    public void setShadowOfCurrentBlock(){
+    public void setShadowOfCurrentBlock() {
+    	
         boolean blockOut = false;
         
         // Kontrola kolizí
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
         	
-            if (shadowBlock[i].y + blockWidth > (HEIGHT - blockWidth) + shiftOfGameArea){
+            if (shadowBlock[i].y + blockWidth > (HEIGHT - blockWidth) + shiftOfGameArea) {
                 blockOut = true;
             }
             
-            for (int j = 0; j < blocks.size() - shadowBlock.length; j++){
+            for (int j = 0; j < blocks.size() - shadowBlock.length; j++) {
             	
                 if (shadowBlock[i].x == blocks.get(j).x &&
-                    shadowBlock[i].y + blockWidth == blocks.get(j).y){
+                    shadowBlock[i].y + blockWidth == blocks.get(j).y) {
+                	
                     blockOut = true;
                 }
             }
         }
         
         // Posune dopad aktuálního bloku
-        if (!blockOut){
+        if (!blockOut) {
         	
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 shadowBlock[i].y = shadowBlock[i].y + blockWidth;
             }
             setShadowOfCurrentBlock();  // Rekurze
@@ -648,11 +687,11 @@ public class GameWindow extends JPanel{
      * 	Ověření zda hra běží
      * 	@return 
      */
-    private boolean isPlaying(){
+    private boolean isPlaying() {
     	
-        for (int i = 0; i < blocks.size(); i++){
+        for (int i = 0; i < blocks.size(); i++) {
         	
-            if (blocks.get(i).y < 2*blockWidth){
+            if (blocks.get(i).y < 2 * blockWidth) {
                 return inGame = false;
             }
         }
@@ -665,20 +704,22 @@ public class GameWindow extends JPanel{
      */
     @Override
     public void paintComponent(Graphics g) {
+    	
         super.paintComponent(g);
         
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         // Hrací plocha
-        if (inGame){
+        if (inGame) {
         	
-            for (int i = 0; i < colors.size(); i++){
+            for (int i = 0; i < colors.size(); i++) {
+            	
                 g.setColor(colors.get(i));
                 g.fillRect(blocks.get(i).x, blocks.get(i).y, blockWidth - 3, blockWidth - 3);
             }
         
-            for (int i = 0; i < shadowBlock.length; i++){
+            for (int i = 0; i < shadowBlock.length; i++) {
                 g.drawRect(shadowBlock[i].x, shadowBlock[i].y, blockWidth - 4, blockWidth - 4);
             }
             
@@ -690,19 +731,21 @@ public class GameWindow extends JPanel{
         g.drawRect(1, 1, WIDTH, HEIGHT - shiftOfGameArea);
         
         g.drawString("Score", WIDTH + (stringHeight / 2), stringHeight);
-        g.drawString(String.valueOf(score), WIDTH + (stringHeight / 2), 2*stringHeight);
+        g.drawString(String.valueOf(score), WIDTH + (stringHeight / 2), 2 * stringHeight);
         
-        g.drawString("Lines", WIDTH + (stringHeight / 2), 4*stringHeight);
-        g.drawString(String.valueOf(linesScore), WIDTH + (stringHeight / 2), 5*stringHeight);
+        g.drawString("Lines", WIDTH + (stringHeight / 2), 4 * stringHeight);
+        g.drawString(String.valueOf(linesScore), WIDTH + (stringHeight / 2), 5 * stringHeight);
         
-        g.drawString("Next", WIDTH + (stringHeight / 2), 7*stringHeight);
+        g.drawString("Next", WIDTH + (stringHeight / 2), 7 * stringHeight);
         
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
+        	
             g.setColor(color);
             g.fillRect(nextBlock[i].x, nextBlock[i].y, blockWidth - 3, blockWidth - 3);
         }
         
         if (!data.isEmpty()) {
+        	
         	g.setColor(Color.WHITE);
             g.drawString("High", WIDTH + (stringHeight / 2), 12*stringHeight);
             g.drawString("Score", WIDTH + (stringHeight / 2), 13*stringHeight);
@@ -714,7 +757,8 @@ public class GameWindow extends JPanel{
      * 	Výpis konce hry
      * 	@param g
      */
-    private void gameOver(Graphics g){
+    private void gameOver(Graphics g) {
+    	
     	saveScore();
     	
         String gameOver = "GAME OVER";
@@ -737,6 +781,7 @@ public class GameWindow extends JPanel{
      * 	@param g
      */
     private void loadScore(Graphics g) {
+    	
     	String scoreString = "";
 		int StringPossition = 15;
 		
@@ -745,6 +790,7 @@ public class GameWindow extends JPanel{
     		while ((scoreString = br.readLine()) != null) {
     			
     			if (!data.toString().contains(scoreString)) {
+    				
     				data.add(Integer.parseInt(scoreString));
     			}
     			
@@ -763,6 +809,7 @@ public class GameWindow extends JPanel{
     private void saveScore() {
     	
     	try (BufferedWriter bw = new BufferedWriter(new FileWriter("score.txt"))) {
+    		
 			data.add(score);
 			Collections.sort(data);
 			Collections.reverse(data);
@@ -775,6 +822,7 @@ public class GameWindow extends JPanel{
 			if (data.size() > 5) {
 				
 				for (int i = 0; i < 5; i++) {
+					
 					bw.write(data.get(i).toString());
 					bw.newLine();
 				}
@@ -782,6 +830,7 @@ public class GameWindow extends JPanel{
 			} else {
 				
 				for (int i = 0; i < data.size(); i++) {
+					
 					bw.write(data.get(i).toString());
 					bw.newLine();
 				}
