@@ -8,6 +8,7 @@ public class Block {
 	 * 	Block O
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockO(int rotation){
@@ -35,6 +36,7 @@ public class Block {
 	 * 	Block I
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockI(int rotation){
@@ -62,6 +64,7 @@ public class Block {
 	 * 	Block T
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockT(int rotation){
@@ -89,6 +92,7 @@ public class Block {
 	 * 	Block S
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockS(int rotation){
@@ -116,6 +120,7 @@ public class Block {
 	 * 	Block Z
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockZ(int rotation){
@@ -143,6 +148,7 @@ public class Block {
 	 * 	Block L
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockL(int rotation){
@@ -170,6 +176,7 @@ public class Block {
 	 * 	Block J
 	 * 
 	 * 	@param rotation - rotace bloku
+	 * 
 	 * 	@return vrací souřadnice bloku
 	 */
     public Point[] getBlockJ(int rotation){

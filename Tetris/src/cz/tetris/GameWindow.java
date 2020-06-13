@@ -33,36 +33,79 @@ public class GameWindow extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
+	// Rozměry okna
 	private final int HEIGHT = 800;
 	private final int WIDTH = 400;
     
-    private int blockWidth = HEIGHT / 20;	// Šířka bloku
-    private int screenCenter = WIDTH / 2;   // Střed hracího pole
-    private int shiftOfGameArea = 3;	// Posune hrací plochy
-    private int stringHeight = HEIGHT / 20;	// Výška písma
-
-    private Point[] currentBlock;	// Aktuální blok
-    private Point[] shadowBlock;	// Dopad aktuálního bloku
-    private Point[] nextBlock;		// Příští blok
-    private Point[] assistantBlock;	// Pomocný blok při rotaci
-    private Point centralPoint = new Point();	// Centrální bod bloku
+	// Šířka bloku
+    private int blockWidth = HEIGHT / 20;	
     
-    private int nextShape = 0;		// Další tvar bloku
-    private int currentShape = 0;	// Aktuální tvar bloku
-    private int rotation;		// Rotace bloku
-    private boolean collision = false;	// Ověřuje kolizi při rotaci s jiným blokem
-    private boolean inGame = true;		// Ověřuje zda hra běží
-    private int score = 0;		// Skóre ve hře
-    private int linesScore = 0;		// Skóre počtu smazaných řádků
-    private boolean newHighScore = false;	// Ověřuje zda skóre na konci hry patří do Top 5
+    // Střed hracího pole
+    private int screenCenter = WIDTH / 2;   
+    
+    // Posune hrací plochy (mírné odsazení od okraje)
+    private int shiftOfGameArea = 3;	
+    
+    // Výška písma
+    private int fontHeight = HEIGHT / 20;	
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Aktuální blok (ovládaný)
+    private Point[] currentBlock;	
+    
+    // Dopad aktuálního bloku (obrys bez výplně)
+    private Point[] shadowBlock;	
+    
+    // Příští blok
+    private Point[] nextBlock;		
+    
+    // Pomocný blok při rotaci
+    private Point[] assistantBlock;	
+    
+    // Centrální bod bloku
+    private Point centralPoint = new Point();	
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Další tvar bloku
+    private int nextShape = 0;
+    
+    // Aktuální tvar bloku
+    private int currentShape = 0;	
+    
+    // Rotace bloku
+    private int rotation;		
+    
+    // Ověřuje kolizi při rotaci s jiným blokem
+    private boolean collision = false;	
+    
+    // Ověřuje zda hra běží
+    private boolean inGame = true;		
+    
+    // Skóre ve hře
+    private int score = 0;		
+    
+    // Skóre smazaných řádků
+    private int linesScore = 0;		
+    
+    // Ověřuje zda skóre na konci hry patří do Top 5
+    private boolean newHighScore = false;	
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////
     
     private Timer timer;
     private Color color;
     private Font font;
     
-    private List<Point> blocks = new ArrayList<>();		// List všech bloků
-    private List<Color> colors = new ArrayList<>();		// List všech barev k blokům
-    private List<Integer> data = new ArrayList<>();		// List dat ze souboru
+    // List všech bloků
+    private List<Point> blocks = new ArrayList<>();	
+    
+    // List všech barev k blokům
+    private List<Color> colors = new ArrayList<>();		
+    
+    // List dat ze souboru
+    private List<Integer> fileData = new ArrayList<>();		
     
 // Konstruktor //////////////////////////////////////////////////////////////////////////////////////
     
@@ -72,7 +115,7 @@ public class GameWindow extends JPanel{
         setBackground(Color.BLACK);
         setFocusable(true);
         
-        font = new Font(Font.SANS_SERIF, Font.BOLD, stringHeight);
+        font = new Font(Font.SANS_SERIF, Font.BOLD, fontHeight);
         
         // Namapování akcí
         InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -305,8 +348,8 @@ public class GameWindow extends JPanel{
         // Umístění příštího bloku na boční panel
         for (int i = 0; i < 4; i++) {
         	
-            nextBlock[i].x = (nextBlock[i].x * blockWidth) + (WIDTH + (stringHeight / 2));
-            nextBlock[i].y = (nextBlock[i].y * blockWidth) + (8 * stringHeight);
+            nextBlock[i].x = (nextBlock[i].x * blockWidth) + (WIDTH + (fontHeight / 2));
+            nextBlock[i].y = (nextBlock[i].y * blockWidth) + (8 * fontHeight);
         }
     }
     
@@ -685,7 +728,8 @@ public class GameWindow extends JPanel{
     
     /**
      * 	Ověření zda hra běží
-     * 	@return 
+     * 
+     * 	@return vrací true / false
      */
     private boolean isPlaying() {
     	
@@ -730,13 +774,13 @@ public class GameWindow extends JPanel{
         g.setColor(Color.WHITE);
         g.drawRect(1, 1, WIDTH, HEIGHT - shiftOfGameArea);
         
-        g.drawString("Score", WIDTH + (stringHeight / 2), stringHeight);
-        g.drawString(String.valueOf(score), WIDTH + (stringHeight / 2), 2 * stringHeight);
+        g.drawString("Score", WIDTH + (fontHeight / 2), fontHeight);
+        g.drawString(String.valueOf(score), WIDTH + (fontHeight / 2), 2 * fontHeight);
         
-        g.drawString("Lines", WIDTH + (stringHeight / 2), 4 * stringHeight);
-        g.drawString(String.valueOf(linesScore), WIDTH + (stringHeight / 2), 5 * stringHeight);
+        g.drawString("Lines", WIDTH + (fontHeight / 2), 4 * fontHeight);
+        g.drawString(String.valueOf(linesScore), WIDTH + (fontHeight / 2), 5 * fontHeight);
         
-        g.drawString("Next", WIDTH + (stringHeight / 2), 7 * stringHeight);
+        g.drawString("Next", WIDTH + (fontHeight / 2), 7 * fontHeight);
         
         for (int i = 0; i < 4; i++) {
         	
@@ -744,17 +788,19 @@ public class GameWindow extends JPanel{
             g.fillRect(nextBlock[i].x, nextBlock[i].y, blockWidth - 3, blockWidth - 3);
         }
         
-        if (!data.isEmpty()) {
+        if (!fileData.isEmpty()) {
         	
         	g.setColor(Color.WHITE);
-            g.drawString("High", WIDTH + (stringHeight / 2), 12*stringHeight);
-            g.drawString("Score", WIDTH + (stringHeight / 2), 13*stringHeight);
+            g.drawString("High", WIDTH + (fontHeight / 2), 12*fontHeight);
+            g.drawString("Score", WIDTH + (fontHeight / 2), 13*fontHeight);
         }
+        
         loadScore(g);	// Načtení skóre ze souboru
     }
     
     /**
      * 	Výpis konce hry
+     * 
      * 	@param g
      */
     private void gameOver(Graphics g) {
@@ -769,15 +815,16 @@ public class GameWindow extends JPanel{
         
         g.setFont(font);
         g.setColor(Color.WHITE);
-        g.drawString(gameOver, (WIDTH - gameOverWidth) / 2, (HEIGHT - stringHeight) / 2);
+        g.drawString(gameOver, (WIDTH - gameOverWidth) / 2, (HEIGHT - fontHeight) / 2);
         
         if (newHighScore) {
-        	g.drawString(highScore, (WIDTH - highScoreWidth) / 2, (HEIGHT + stringHeight) / 2);
+        	g.drawString(highScore, (WIDTH - highScoreWidth) / 2, (HEIGHT + fontHeight) / 2);
         }
     }
     
     /**
      * 	Přepsání skóre
+     * 
      * 	@param g
      */
     private void loadScore(Graphics g) {
@@ -789,12 +836,12 @@ public class GameWindow extends JPanel{
     		
     		while ((scoreString = br.readLine()) != null) {
     			
-    			if (!data.toString().contains(scoreString)) {
+    			if (!fileData.toString().contains(scoreString)) {
     				
-    				data.add(Integer.parseInt(scoreString));
+    				fileData.add(Integer.parseInt(scoreString));
     			}
     			
-    			g.drawString(scoreString, WIDTH + (stringHeight / 2), StringPossition*stringHeight);
+    			g.drawString(scoreString, WIDTH + (fontHeight / 2), StringPossition*fontHeight);
     			StringPossition++;
     		}
     		
@@ -810,28 +857,28 @@ public class GameWindow extends JPanel{
     	
     	try (BufferedWriter bw = new BufferedWriter(new FileWriter("score.txt"))) {
     		
-			data.add(score);
-			Collections.sort(data);
-			Collections.reverse(data);
+			fileData.add(score);
+			Collections.sort(fileData);
+			Collections.reverse(fileData);
 			
-			if (data.indexOf(score) < 1) {
+			if (fileData.indexOf(score) < 1) {
 				newHighScore = true;
 			}
 			
 			// Přepsání 5 nějvyšších skóre
-			if (data.size() > 5) {
+			if (fileData.size() > 5) {
 				
 				for (int i = 0; i < 5; i++) {
 					
-					bw.write(data.get(i).toString());
+					bw.write(fileData.get(i).toString());
 					bw.newLine();
 				}
 			
 			} else {
 				
-				for (int i = 0; i < data.size(); i++) {
+				for (int i = 0; i < fileData.size(); i++) {
 					
-					bw.write(data.get(i).toString());
+					bw.write(fileData.get(i).toString());
 					bw.newLine();
 				}
 			}
