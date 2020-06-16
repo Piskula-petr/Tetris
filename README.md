@@ -1,4 +1,4 @@
-# Tetris
+# 1. Tetris
 
 <img src="tetris.jpg" height="500">
 
