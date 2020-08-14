@@ -127,8 +127,6 @@ public class GameWindow extends JPanel{
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "DownReleased");
         
         // Seznam akcí
-        ActionMap actionMap = this.getActionMap();
-        
         addKeyBinding(this, KeyEvent.VK_LEFT, "Left", (action) -> {
             moveLeft();
         });
